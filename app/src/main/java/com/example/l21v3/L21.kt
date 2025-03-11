@@ -20,10 +20,10 @@ class L21 : Application() {
     override fun onCreate() {
         super.onCreate()
         applicationScope.launch {
-            if (database.employeeDao().getCount() == 0) {
-                val employees = EmployeeFactory.createEmployees(100)
-                database.employeeDao().insertAll(employees)
-            }
+//            if (database.employeeDao().getCount() == 0) {
+//                val employees = EmployeeFactory.createEmployees(100)
+//                database.employeeDao().insertAll(employees)
+//            }
         }
     }
 

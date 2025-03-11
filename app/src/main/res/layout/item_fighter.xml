@@ -1,0 +1,74 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Имя"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/leftHandIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_fitness" />
+
+        <ImageView
+            android:id="@+id/rightHandIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_pistolet" />
+
+        <TextView
+            android:id="@+id/rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Звание" />
+
+        <TextView
+            android:id="@+id/unitName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Звено" />
+
+        <ImageView
+            android:id="@+id/commanderIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_five_star_badge"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/actionIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_options_vertical"
+            android:layout_gravity="end" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/attributesLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!-- Список характеристик -->
+        <TextView
+            android:id="@+id/attribute1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Характеристика 1: Значение" />
+
+        <!-- Добавьте остальные характеристики -->
+    </LinearLayout>
+</LinearLayout>

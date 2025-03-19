@@ -1,10 +1,20 @@
 package com.example.l21v3.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.util.UUID
 
-@Entity(tableName = "employees")
+@Entity(
+    tableName = "employee",
+    foreignKeys = [ForeignKey(
+        entity = Squad::class,
+        parentColumns = ["id"],
+        childColumns = ["currentSquadId"],
+        onDelete = ForeignKey.SET_NULL
+    )]
+)
 data class Employee(
     @PrimaryKey val id: String = UUID.randomUUID().toString(),
     val name: String,
@@ -12,7 +22,7 @@ data class Employee(
     var rank: String = "Рядовой",
     var isOnMission: Boolean = false,
     var isCommander: Boolean = false,
-    var currentUnitId: String? = null,
+    @ColumnInfo(index = true) var currentSquadId: String? = null,
     val potencialAbility: Int,
     var currentAbility: Int,
     var intellect: Int,

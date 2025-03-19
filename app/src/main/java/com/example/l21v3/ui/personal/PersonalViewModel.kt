@@ -28,7 +28,7 @@ class PersonalViewModel @Inject constructor(
         }
         viewModelScope.launch {
             try {
-                repository.update(employee)
+                repository.updateEmployee(employee)
                 _message.value = "Сотрудник обновлен"
             } catch (e: Exception) {
                 _message.value = "Ошибка при обновлении сотрудника: ${e.message}"
@@ -44,7 +44,7 @@ class PersonalViewModel @Inject constructor(
         }
         viewModelScope.launch {
             try {
-                repository.deleteEmployeeById(employee.id)
+                repository.deleteEmployee(employee)
                 _message.value = "Сотрудник удален"
             } catch (e: Exception) {
                 _message.value = "Ошибка при удалении сотрудника: ${e.message}"
@@ -60,7 +60,7 @@ class PersonalViewModel @Inject constructor(
         }
         viewModelScope.launch {
             try {
-                repository.insert(employee)
+                repository.insertEmployee(employee)
                 _message.value = "Сотрудник добавлен"
             } catch (e: Exception) {
                 _message.value = "Ошибка при добавлении сотрудника: ${e.message}"

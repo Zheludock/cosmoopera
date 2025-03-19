@@ -4,12 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.l21v3.R
 import com.example.l21v3.databinding.FragmentFightersBinding
-import com.google.android.material.snackbar.Snackbar
+import com.example.l21v3.model.Weapons
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,6 +38,21 @@ class FightersFragment : Fragment(R.layout.fragment_fighters) {
             expandedItems = viewModel.expandedItems.value ?: emptySet(),
             onItemClick = { employeeId ->
                 viewModel.toggleAttributes(employeeId)
+            },
+            onActionClick = { action, employee ->
+                when (action) {
+                    FightersAdapter.RIGHT_HAND -> {
+                        showWeaponSelectionDialog(employee.rightHandArm) { selectedWeapon ->
+                            viewModel.giveRightHandAmmo(employee, selectedWeapon)
+                        }
+                    }
+                    FightersAdapter.DELETE_ACTION -> viewModel.deleteEmployee(employee)
+                    FightersAdapter.LEFT_HAND -> {
+                        showLeftHandWeaponSelectionDialog(employee.leftHandArm) { selectedWeapon ->
+                            viewModel.giveLeftHandAmmo(employee, selectedWeapon)
+                        }
+                    }
+                }
             }
         )
 
@@ -48,16 +64,51 @@ class FightersFragment : Fragment(R.layout.fragment_fighters) {
             adapter.submitList(fighters)
         }
 
-        viewModel.message.observe(viewLifecycleOwner) { message ->
-            // Покажите сообщение пользователю (например, через Snackbar)
-            Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
-        }
-
         // Наблюдение за состоянием раскрытых элементов
         viewModel.expandedItems.observe(viewLifecycleOwner) { expandedItems ->
             adapter.expandedItems = expandedItems
             adapter.notifyDataSetChanged()
         }
+    }
+
+    private fun showWeaponSelectionDialog(
+        currentWeapon: String?,
+        onWeaponSelected: (String) -> Unit
+    ) {
+        val weapons = Weapons.values().map { it.name }
+        val currentIndex = weapons.indexOfFirst {
+            it.equals(currentWeapon, ignoreCase = true)
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Выберите оружие для правой руки")
+            .setSingleChoiceItems(weapons.toTypedArray(), currentIndex) { dialog, which ->
+                val selectedWeapon = Weapons.values()[which].name
+                onWeaponSelected(selectedWeapon)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
+    }
+
+    private fun showLeftHandWeaponSelectionDialog(
+        currentWeapon: String?,
+        onWeaponSelected: (String) -> Unit
+    ) {
+        val weapons = listOf("Pistolet", "Sword", "Grenade") // Ограниченный список
+        val currentIndex = weapons.indexOfFirst {
+            it.equals(currentWeapon, ignoreCase = true)
+        }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Выберите оружие для левой руки")
+            .setSingleChoiceItems(weapons.toTypedArray(), currentIndex) { dialog, which ->
+                val selectedWeapon = weapons[which]
+                onWeaponSelected(selectedWeapon)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Отмена", null)
+            .show()
     }
 
     override fun onDestroyView() {

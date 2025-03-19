@@ -61,6 +61,8 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation ("com.google.code.gson:gson:2.10.1")
+
     val room_version = "2.6.1"
 
     implementation("androidx.room:room-runtime:$room_version")

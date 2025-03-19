@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.l21v3.model.Employee
 import com.example.l21v3.model.data.EmployeeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class FightersViewModel @Inject constructor(
@@ -16,39 +16,37 @@ class FightersViewModel @Inject constructor(
 ) : ViewModel() {
 
     // LiveData для списка бойцов
-    private val _fighters = MutableLiveData<List<Employee>>()
-    val fighters: LiveData<List<Employee>> get() = _fighters
+    val fighters: LiveData<List<Employee>> = repository.getEmployeesByRole("Military")
 
     // LiveData для хранения ID раскрытых элементов
     private val _expandedItems = MutableLiveData<Set<String>>(emptySet())
     val expandedItems: LiveData<Set<String>> get() = _expandedItems
 
-    init {
-        loadFighters()
-    }
-
-    // Загрузка списка бойцов
-    private fun loadFighters() {
-        viewModelScope.launch {
-            val fighters = repository.getEmployeesByRole("Military").value ?: emptyList()
-            _fighters.value = fighters
-        }
-    }
-
-    private val _message = MutableLiveData<String>()
-    val message: LiveData<String> get() = _message
-
-    // Переключение видимости характеристик
-    fun toggleAttributes(employeeId: String?) {
-        if (employeeId == null) {
-            _message.value = "Сотрудник не выбран"
-            return
-        }
+    fun toggleAttributes(employeeId: String) {
         val currentSet = _expandedItems.value ?: emptySet()
-        _expandedItems.value = if (currentSet.contains(employeeId)) {
+        val newSet = if (currentSet.contains(employeeId)) {
             currentSet - employeeId
         } else {
             currentSet + employeeId
+        }
+        _expandedItems.value = newSet
+    }
+
+    fun giveRightHandAmmo(employee: Employee, newArm: String) {
+        viewModelScope.launch {
+            repository.updateRightHandArm(employee, newArm)
+        }
+    }
+
+    fun deleteEmployee(employee: Employee) {
+        viewModelScope.launch {
+            repository.deleteEmployee(employee)
+        }
+    }
+
+    fun giveLeftHandAmmo(employee: Employee, newArm: String) {
+        viewModelScope.launch {
+            repository.updateLeftHandArm(employee, newArm)
         }
     }
 }

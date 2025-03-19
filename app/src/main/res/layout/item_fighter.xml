@@ -60,15 +60,151 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="gone"
+        android:layout_marginTop="8dp">
 
-        <!-- Список характеристик -->
+        <!-- Интеллект -->
         <TextView
-            android:id="@+id/attribute1"
+            android:id="@+id/intellect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Характеристика 1: Значение" />
+            android:text="Интеллект: 0"
+            android:textSize="14sp" />
 
-        <!-- Добавьте остальные характеристики -->
+        <!-- Коммуникация -->
+        <TextView
+            android:id="@+id/communication"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Коммуникация: 0"
+            android:textSize="14sp" />
+
+        <!-- Профессионализм -->
+        <TextView
+            android:id="@+id/professionalism"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Профессионализм: 0"
+            android:textSize="14sp" />
+
+        <!-- ОФП -->
+        <TextView
+            android:id="@+id/fitness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ОФП: 0"
+            android:textSize="14sp" />
+
+        <!-- Лидерство -->
+        <TextView
+            android:id="@+id/leadership"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Лидерство: 0"
+            android:textSize="14sp" />
+
+        <!-- Амбиции -->
+        <TextView
+            android:id="@+id/ambition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Амбиции: 0"
+            android:textSize="14sp" />
+
+        <!-- Темперамент -->
+        <TextView
+            android:id="@+id/temperament"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Темперамент: 0"
+            android:textSize="14sp" />
+
+        <!-- Принятие решений -->
+        <TextView
+            android:id="@+id/desisionMaking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Принятие решений: 0"
+            android:textSize="14sp" />
+
+        <!-- Анализ -->
+        <TextView
+            android:id="@+id/analysis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Анализ: 0"
+            android:textSize="14sp" />
+
+        <!-- Креативность -->
+        <TextView
+            android:id="@+id/creativity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Креативность: 0"
+            android:textSize="14sp" />
+
+        <!-- Стратегия -->
+        <TextView
+            android:id="@+id/strategy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Стратегия: 0"
+            android:textSize="14sp" />
+
+        <!-- Экономика -->
+        <TextView
+            android:id="@+id/economic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Экономика: 0"
+            android:textSize="14sp" />
+
+        <!-- Дисциплины -->
+        <TextView
+            android:id="@+id/discipline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Дисциплины: 0"
+            android:textSize="14sp" />
+
+        <!-- Уникальный навык 1 -->
+        <TextView
+            android:id="@+id/unique1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Уникальный навык 1: 0"
+            android:textSize="14sp" />
+
+        <!-- Уникальный навык 2 -->
+        <TextView
+            android:id="@+id/unique2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Уникальный навык 2: 0"
+            android:textSize="14sp" />
+
+        <!-- Уникальный навык 3 -->
+        <TextView
+            android:id="@+id/unique3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Уникальный навык 3: 0"
+            android:textSize="14sp" />
+
+        <!-- Уникальный навык 4 -->
+        <TextView
+            android:id="@+id/unique4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Уникальный навык 4: 0"
+            android:textSize="14sp" />
+
+        <!-- Уникальный навык 5 -->
+        <TextView
+            android:id="@+id/unique5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Уникальный навык 5: 0"
+            android:textSize="14sp" />
     </LinearLayout>
 </LinearLayout>

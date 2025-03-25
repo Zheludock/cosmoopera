@@ -1,4 +1,4 @@
-package com.example.l21v3.ui.personal.military
+package com.example.l21v3.ui.personal.military.figters
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

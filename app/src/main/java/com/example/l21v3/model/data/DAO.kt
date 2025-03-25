@@ -19,6 +19,9 @@ interface EmployeeDao {
     @Update
     suspend fun update(employee: Employee)
 
+    @Query("SELECT * FROM employee WHERE currentSquadId IS :squadId AND role = :role")
+    fun getEmployeesBySquadIdLiveData(squadId: String?, role: String): LiveData<List<Employee>>
+
     @Delete
     suspend fun delete(employee: Employee)
 
@@ -27,9 +30,6 @@ interface EmployeeDao {
 
     @Query("SELECT * FROM employee WHERE id = :id")
     suspend fun getEmployeeById(id: String): Employee?
-
-    @Query("SELECT * FROM employee WHERE currentSquadId = :squadId")
-    suspend fun getEmployeesBySquadId(squadId: String?): List<Employee>
 
     @Transaction
     @Query("SELECT * FROM employee WHERE id = :employeeId")
@@ -45,8 +45,7 @@ interface EmployeeDao {
     suspend fun insertAll(employees: List<Employee>)
 
     @Query("UPDATE employee SET currentSquadId = :squadId WHERE id = :employeeId")
-    suspend fun updateEmployeeSquad(employeeId: String, squadId: String)
-
+    suspend fun updateEmployeeSquad(employeeId: String?, squadId: String)
 }
 
 @Dao
@@ -70,12 +69,6 @@ interface SquadDao {
     @Query("SELECT * FROM squad WHERE id = :squadId")
     suspend fun getSquadWithMembers(squadId: String): SquadWithMembers
 
-    @Query("SELECT * FROM squad GROUP BY type")
-    suspend fun getAllSquads(): List<Squad>
-
-    @Query("SELECT * FROM squad WHERE parentSquadId IS :parentSquadId")
-    suspend fun getSquadsByParentId(parentSquadId: String?): List<Squad>
-
-    @Query("UPDATE squad SET parentSquadId = :parentSquadId WHERE id = :squadId")
-    suspend fun updateSquadParent(squadId: String, parentSquadId: String)
+    @Query("SELECT * FROM squad")
+    fun getAllSquads(): LiveData<List<Squad>>
 }

@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.l21v3.databinding.FragmentMilitaryBinding
 import com.example.l21v3.ui.personal.ViewPagerAdapter
+import com.example.l21v3.ui.personal.military.figters.FightersFragment
+import com.example.l21v3.ui.personal.military.squads.SquadsFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +34,7 @@ class MilitaryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Наблюдение за списком военных
-        viewModel.militaryEmployees.observe(viewLifecycleOwner) { employees ->
+        viewModel.militaryEmployees.observe(viewLifecycleOwner) {
             // Передайте данные в адаптер для подтаба "Бойцы"
         }
 

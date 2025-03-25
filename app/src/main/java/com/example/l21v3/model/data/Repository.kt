@@ -26,10 +26,6 @@ class EmployeeRepository @Inject constructor(
         return employeeDao.getEmployeeById(id)
     }
 
-    suspend fun getEmployeesBySquadId(squadId: String): List<Employee> {
-        return employeeDao.getEmployeesBySquadId(squadId)
-    }
-
     suspend fun getEmployeeWithSquad(employeeId: String): EmployeeWithSquad {
         return employeeDao.getEmployeeWithSquad(employeeId)
     }
@@ -56,12 +52,15 @@ class EmployeeRepository @Inject constructor(
         employeeDao.insertAll(employees)
     }
 
-    suspend fun getFreeEmployees(): List<Employee> {
-        return employeeDao.getEmployeesBySquadId(null)
-    }
+    fun getFreeEmployees(role: String): LiveData<List<Employee>> =
+        employeeDao.getEmployeesBySquadIdLiveData(null, role)
 
     suspend fun updateEmployeeSquad(employeeId: String, squadId: String) {
         employeeDao.updateEmployeeSquad(employeeId, squadId)
+    }
+
+    fun getEmployeesBySquadId(squadId: String, role: String): LiveData<List<Employee>> {
+        return employeeDao.getEmployeesBySquadIdLiveData(squadId, role)
     }
 }
 
@@ -94,18 +93,5 @@ class SquadRepository @Inject constructor(
         return squadDao.getSquadWithMembers(squadId)
     }
 
-    suspend fun getAllSquads(): List<Squad> {
-        val squads = squadDao.getAllSquads()
-        return squads.map { squad ->
-            squad.copy(currentSize = employeeDao.getSquadMembersCount(squad.id))
-        }
-    }
-
-    suspend fun getFreeSquads(parentSquadId: String?): List<Squad> {
-        return squadDao.getSquadsByParentId(parentSquadId)
-    }
-
-    suspend fun updateSquadParent(squadId: String, parentSquadId: String) {
-        squadDao.updateSquadParent(squadId, parentSquadId)
-    }
+    fun getAllSquads(): LiveData<List<Squad>> = squadDao.getAllSquads()
 }

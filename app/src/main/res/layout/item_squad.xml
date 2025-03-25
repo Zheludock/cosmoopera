@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp"
-    android:background="?attr/selectableItemBackground">
+    android:padding="8dp">
 
-    <!-- Основная информация -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,46 +17,30 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/ivAddMember"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@android:drawable/ic_menu_add"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/squadSize"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Численность: 0/0"
-            android:textSize="14sp" />
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"/>
 
-        <TextView
-            android:id="@+id/squadCommander"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textSize="14sp"
-            android:textColor="@color/black"/>
-
-        <ImageButton
-            android:id="@+id/addSubunitButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_add"
-            android:contentDescription="Добавить подотряд" />
     </LinearLayout>
 
-    <!-- Разделитель -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="8dp"
-        android:background="#EEE"/>
-
-    <!-- Список подотрядов/солдат (скрыт по умолчанию) -->
-    <LinearLayout
-        android:id="@+id/subUnitsLayout"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/membersRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:visibility="gone"
-        android:paddingStart="24dp"
-        android:paddingTop="8dp"/>
+        app:layoutManager="LinearLayoutManager"/>
+
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.example.l21v3.ui.personal.military
+package com.example.l21v3.ui.personal.military.figters
 
 import android.os.Bundle
 import android.view.LayoutInflater

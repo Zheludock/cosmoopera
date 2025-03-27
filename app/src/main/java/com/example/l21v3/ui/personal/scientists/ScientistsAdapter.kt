@@ -1,16 +1,15 @@
-package com.example.l21v3.ui.personal.military
+package com.example.l21v3.ui.personal.scientists
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
-import com.example.l21v3.R
 import com.example.l21v3.databinding.ItemEmployeeBinding
 import com.example.l21v3.databinding.ItemSectionHeaderBinding
 import com.example.l21v3.model.Employee
+import com.example.l21v3.ui.personal.military.Section
 
-class MilitaryAdapter(
+class ScientistsAdapter(
     private val onHeaderClick: (String) -> Unit,
     private val onItemClick: (String) -> Unit,
     private val onHeaderAction: (Section, View) -> Unit,
@@ -133,15 +132,9 @@ class HeaderViewHolder(
 
     fun bind(section: Section, isExpanded: Boolean) {
         binding.tvTitle.text = section.title
-        binding.tvSquadSize.text = section.sizeText
 
-        // Устанавливаем цвет в зависимости от заполненности отряда
-        val color = if (section.isUnderstaffed && section.id != "no_squad") {
-            ContextCompat.getColor(binding.root.context, R.color.red)
-        } else {
-            ContextCompat.getColor(binding.root.context, android.R.color.secondary_text_dark)
-        }
-        binding.tvSquadSize.setTextColor(color)
+        // Для инженеров всегда отображаем только текущее количество
+        binding.tvSquadSize.text = "${section.currentSize}"
     }
 }
 
@@ -154,8 +147,8 @@ class EmployeeViewHolder(
         binding.rank.text = employee.rank
         binding.commanderIcon.visibility = if (employee.isCommander) View.VISIBLE else View.GONE
         binding.attributesLayout.visibility = if (isExpanded) View.VISIBLE else View.GONE
-        binding.leftHandIcon.setImageResource(getWeaponIconRes(employee.leftHandArm))
-        binding.rightHandIcon.setImageResource(getWeaponIconRes(employee.rightHandArm))
+        binding.leftHandIcon.visibility = View.GONE
+        binding.rightHandIcon.visibility = View.GONE
 
         // Заполнение атрибутов
         binding.intellect.text = "Интеллект: ${employee.intellect}"
@@ -171,24 +164,11 @@ class EmployeeViewHolder(
         binding.strategy.text = "Стратегия: ${employee.strategy}"
         binding.economic.text = "Экономика: ${employee.economic}"
         binding.discipline.text = "Дисциплина: ${employee.disciplines}"
-        binding.unique1.text = "Меткость: ${employee.uniqueSkill1}"
-        binding.unique2.text = "Выбор позиции: ${employee.uniqueSkill2}"
-        binding.unique3.text = "Реакция: ${employee.uniqueSkill3}"
-        binding.unique4.text = "Тактика: ${employee.uniqueSkill4}"
-        binding.unique5.text = "Самообладание: ${employee.uniqueSkill5}"
-    }
-
-    private fun getWeaponIconRes(weaponType: String?): Int {
-        return when (weaponType?.lowercase()) {
-            "pistolet" -> R.drawable.ic_pistolet
-            "sword" -> R.drawable.ic_sword_02
-            "grenade" -> R.drawable.ic_bomb
-            "sniper" -> R.drawable.ic_sniper
-            "automat" -> R.drawable.ic_automat
-            "shotgun" -> R.drawable.ic_shotgun
-            "heavygun" -> R.drawable.ic_heavygun
-            else -> R.drawable.ic_fitness // Иконка для отсутствующего оружия
-        }
+        binding.unique1.text = "Ксеноморфология: ${employee.uniqueSkill1}"
+        binding.unique2.text = "Биология: ${employee.uniqueSkill2}"
+        binding.unique3.text = "Физика: ${employee.uniqueSkill3}"
+        binding.unique4.text = "Геология: ${employee.uniqueSkill4}"
+        binding.unique5.text = "Метеорология: ${employee.uniqueSkill5}"
     }
 }
 

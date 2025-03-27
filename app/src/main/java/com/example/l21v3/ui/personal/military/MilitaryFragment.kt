@@ -89,7 +89,7 @@ class MilitaryFragment : Fragment() {
             .setTitle("Создать отряд")
             .setView(editText)
             .setPositiveButton("Создать") { _, _ ->
-                viewModel.createSquad(editText.text.toString().trim())
+                viewModel.createSquad(editText.text.toString().trim(), "Military")
             }
             .setNegativeButton("Отмена", null)
             .show()

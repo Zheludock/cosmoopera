@@ -21,7 +21,7 @@ object EmployeeFactory {
             else -> "Military"
         }
         val currentAbility = (50..100).random()
-        val potencialAbility = (currentAbility..200).random()
+        val potencialAbility = (currentAbility..150).random()
 
         val characteristics = generateCharacteristics(currentAbility)
 

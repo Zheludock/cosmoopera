@@ -91,4 +91,10 @@ interface SquadDao {
 
     @Query("UPDATE squad SET commanderId = :commanderId WHERE id = :squadId")
     suspend fun updateCommander(squadId: String, commanderId: String?)
+
+    @Query("SELECT * FROM squad WHERE department = :department")
+    suspend fun getSquadByDepartment(department: String): List<Squad>
+
+    @Insert
+    suspend fun insertAll(squads: List<Squad>)
 }

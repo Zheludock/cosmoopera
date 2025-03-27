@@ -104,4 +104,8 @@ class SquadRepository @Inject constructor(
     suspend fun updateSquadCommander(id: String, id1: String) {
         squadDao.updateCommander(id, id1)
     }
+
+    suspend fun getSquadByDepartment(department: String): List<Squad>{
+        return squadDao.getSquadByDepartment(department)
+    }
 }

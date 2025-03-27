@@ -10,8 +10,9 @@ data class Squad(
     @PrimaryKey val id: String = UUID.randomUUID().toString(),
     val name: String,
     @ColumnInfo(index = true) var commanderId: String? = null,
+    val department: String,
     var currentSize: Int = 0,
-    val maxSize: Int = MAXSIZE
+    val maxSize: Int? = MAXSIZE
 ) {
     companion object {
         const val MAXSIZE: Int = 5

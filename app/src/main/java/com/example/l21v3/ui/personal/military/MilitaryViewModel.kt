@@ -33,7 +33,7 @@ class MilitaryViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val employees = employeeRepository.getEmployeesByRole("Military")
-                val squads = squadRepository.getAllSquads().sortedBy { it.name }
+                val squads = squadRepository.getSquadByDepartment("Military").sortedBy { it.name }
 
                 val sections = mutableListOf<Section>().apply {
                     // Секция "Без звена" (без максимального размера)
@@ -60,7 +60,7 @@ class MilitaryViewModel @Inject constructor(
         }
     }
 
-    fun createSquad(name: String) {
+    fun createSquad(name: String, department: String) {
         viewModelScope.launch {
             if (name.isBlank()) {
                 _toastMessage.value = "Введите название отряда"
@@ -75,7 +75,8 @@ class MilitaryViewModel @Inject constructor(
             val newSquad = Squad(
                 id = UUID.randomUUID().toString(),
                 name = name,
-                currentSize = 0
+                currentSize = 0,
+                department = department,
             )
 
             try {
@@ -108,7 +109,7 @@ class MilitaryViewModel @Inject constructor(
     fun getAvailableSquads(excludeSquadId: String?): LiveData<List<Squad>> {
         val result = MutableLiveData<List<Squad>>()
         viewModelScope.launch {
-            val allSquads = squadRepository.getAllSquads()
+            val allSquads = squadRepository.getSquadByDepartment("Military")
             val filtered = allSquads.filter { it.id != excludeSquadId }
             result.postValue(filtered)
         }
@@ -223,6 +224,8 @@ class MilitaryViewModel @Inject constructor(
             }
         }
     }
+
+
 
     data class SelectCommanderEvent(val squad: Squad, val members: List<Employee>)
 }

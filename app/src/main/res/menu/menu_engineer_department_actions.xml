@@ -1,0 +1,5 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_assign_commander"
+        android:title="Назначить руководителя"/>
+</menu>

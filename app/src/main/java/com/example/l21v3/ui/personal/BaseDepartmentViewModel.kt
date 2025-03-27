@@ -10,6 +10,9 @@ import com.example.l21v3.model.data.EmployeeRepository
 import com.example.l21v3.model.data.Rank
 import com.example.l21v3.model.data.SquadRepository
 import com.example.l21v3.ui.personal.military.Section
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 abstract class BaseDepartmentViewModel(
@@ -28,21 +31,21 @@ abstract class BaseDepartmentViewModel(
     protected val _selectCommanderEvent = MutableLiveData<SelectCommanderEvent>()
     val selectCommanderEvent: LiveData<SelectCommanderEvent> = _selectCommanderEvent
 
-    init {
-        onInit()
+    sealed class UiState {
+        object Loading : UiState()
+        data class Success(val sections: List<Section>) : UiState()
+        data class Error(val message: String) : UiState()
     }
 
-    protected fun onInit() {
-        loadData()
-    }
+    private val _uiState = MutableStateFlow<UiState>(UiState.Loading)
+    val uiState: StateFlow<UiState> = _uiState.asStateFlow()
 
     protected fun loadData() {
         viewModelScope.launch {
+            _uiState.value = UiState.Loading
             try {
-                println("🟢 Loading data for $department...")
                 val employees = employeeRepository.getEmployeesByRole(role)
                 val squads = squadRepository.getSquadByDepartment(department)
-                println("🔵 Found ${employees.size} employees, ${squads.size} squads")
 
                 val sections = mutableListOf<Section>().apply {
                     add(Section(
@@ -63,9 +66,10 @@ abstract class BaseDepartmentViewModel(
                 }
 
                 _sections.postValue(sections)
+                _uiState.value = UiState.Success(sections)
             } catch (e: Exception) {
-                println("🔴 Error: ${e.message}")
                 _toastMessage.value = "Ошибка загрузки данных"
+                _uiState.value = UiState.Error("Ошибка загрузки данных")
             }
         }
     }
@@ -73,11 +77,34 @@ abstract class BaseDepartmentViewModel(
     open fun transferEmployee(employee: Employee, newSquadId: String?) {
         viewModelScope.launch {
             try {
-                val updatedEmployee = employee.copy(currentSquadId = newSquadId)
+                var updatedEmployee = employee.copy(currentSquadId = newSquadId)
+                val oldSquadId = employee.currentSquadId
+
+                // Если сотрудник был командиром
+                if (employee.isCommander) {
+                    // Снимаем флаг командира
+                    updatedEmployee = updatedEmployee.copy(isCommander = false)
+
+                    // Обновляем старый отряд
+                    oldSquadId?.let { squadId ->
+                        val oldSquad = squadRepository.getSquadById(squadId)
+                        if (oldSquad?.commanderId == employee.id) {
+                            squadRepository.updateSquadCommander(squadId, null)
+                        }
+                    }
+                }
+
+                // Сохраняем изменения
                 employeeRepository.updateEmployee(updatedEmployee)
                 loadData()
+
+                _toastMessage.postValue(
+                    if (oldSquadId != null) "${employee.name} переведен в новый отряд"
+                    else "${employee.name} назначен в отряд"
+                )
+
             } catch (e: Exception) {
-                _toastMessage.postValue("Ошибка перевода сотрудника")
+                _toastMessage.postValue("Ошибка перевода сотрудника: ${e.localizedMessage}")
             }
         }
     }
@@ -91,16 +118,37 @@ abstract class BaseDepartmentViewModel(
     fun assignCommander(squad: Squad, employee: Employee) {
         viewModelScope.launch {
             try {
+                // Получаем текущий состав отряда
+                val squadMembers = employeeRepository.getEmployeesBySquad(squad.id)
+
+                // Определяем ранг кандидата
+                val candidateRank = Rank.entries.find { it.displayName == employee.rank }
+                    ?: throw IllegalArgumentException("Некорректное звание сотрудника")
+
+                // Проверяем наличие более высоких званий
+                val hasSuperiorRank = squadMembers.any { member ->
+                    val memberRank = Rank.entries.find { it.displayName == member.rank }
+                    (memberRank?.order ?: 0) > candidateRank.order
+                }
+
+                if (hasSuperiorRank) {
+                    _toastMessage.postValue("В отряде есть сотрудники с более высоким званием!")
+                    return@launch
+                }
+
+                // Снимаем предыдущего командира
                 squad.commanderId?.let { oldCommanderId ->
                     employeeRepository.updateCommanderStatus(oldCommanderId, false)
                 }
+
+                // Назначаем нового командира
                 employeeRepository.updateCommanderStatus(employee.id, true)
                 squadRepository.updateSquadCommander(squad.id, employee.id)
 
                 loadData()
                 _toastMessage.postValue("${employee.name} назначен командиром")
             } catch (e: Exception) {
-                _toastMessage.postValue("Ошибка назначения командира")
+                _toastMessage.postValue("Ошибка назначения: ${e.localizedMessage}")
             }
         }
     }

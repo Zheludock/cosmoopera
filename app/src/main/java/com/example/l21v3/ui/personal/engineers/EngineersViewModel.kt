@@ -15,6 +15,6 @@ class EngineersViewModel @Inject constructor(
     override val department = "Engineers"
 
     init {
-        onInit()
+        loadData() // Явный вызов загрузки
     }
 }

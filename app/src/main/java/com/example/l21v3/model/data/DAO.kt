@@ -7,8 +7,11 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Transaction
 import androidx.room.Update
+import androidx.room.Upsert
 import com.example.l21v3.model.Employee
+import com.example.l21v3.model.ResourceEntity
 import com.example.l21v3.model.Squad
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EmployeeDao {
@@ -51,6 +54,9 @@ interface EmployeeDao {
 
     @Query("UPDATE employee SET isCommander = :isCommander WHERE id = :employeeId")
     suspend fun updateCommanderStatus(employeeId: String, isCommander: Boolean)
+
+    @Query("SELECT * FROM employee WHERE currentSquadId = :squadId")
+    suspend fun getEmployeesBySquadId(squadId: String): List<Employee>
 }
 
 @Dao
@@ -97,4 +103,16 @@ interface SquadDao {
 
     @Insert
     suspend fun insertAll(squads: List<Squad>)
+}
+
+@Dao
+interface ResourcesDao {
+    @Query("SELECT * FROM resources")
+    suspend fun getAll(): List<ResourceEntity>
+
+    @Query("SELECT * FROM resources")
+    fun getAllStream(): Flow<List<ResourceEntity>>
+
+    @Upsert
+    suspend fun upsert(resource: ResourceEntity)
 }

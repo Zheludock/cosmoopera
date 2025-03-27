@@ -20,7 +20,7 @@ class MilitaryViewModel @Inject constructor(
     override val department = "Military"
 
     init {
-        onInit()
+        loadData() // Явный вызов загрузки
     }
 
     fun createSquad(name: String, department: String) {

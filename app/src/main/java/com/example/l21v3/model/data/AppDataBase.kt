@@ -6,16 +6,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.l21v3.model.Employee
+import com.example.l21v3.model.ResourceEntity
 import com.example.l21v3.model.Squad
 
 
 @Database(
-    entities = [Employee::class, Squad::class],
+    entities = [Employee::class, Squad::class, ResourceEntity::class],
     version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
     abstract fun employeeDao(): EmployeeDao
     abstract fun squadDao(): SquadDao
+    abstract fun resourcesDao(): ResourcesDao
 
     companion object {
         @Volatile

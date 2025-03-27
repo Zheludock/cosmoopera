@@ -34,4 +34,10 @@ object DatabaseModule {
     fun provideSquadDao(appDatabase: AppDatabase): SquadDao {
         return appDatabase.squadDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideResourcesDao(appDatabase: AppDatabase): ResourcesDao {
+        return appDatabase.resourcesDao()
+    }
 }

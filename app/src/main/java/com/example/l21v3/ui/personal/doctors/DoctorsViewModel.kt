@@ -14,6 +14,6 @@ class DoctorsViewModel @Inject constructor(
     override val role = "Doctor"
     override val department = "Doctors"
     init {
-        onInit()
+        loadData() // Явный вызов загрузки
     }
 }

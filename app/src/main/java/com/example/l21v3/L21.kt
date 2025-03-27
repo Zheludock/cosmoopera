@@ -5,6 +5,7 @@ import android.util.Log
 import com.example.l21v3.model.EmployeeFactory
 import com.example.l21v3.model.Squad
 import com.example.l21v3.model.data.AppDatabase
+import com.example.l21v3.model.data.ResourcesRepository
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
@@ -21,6 +22,9 @@ class L21 : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        CoroutineScope(Dispatchers.IO).launch {
+            ResourcesRepository(database.resourcesDao()).initResources()
+        }
         applicationScope.launch {
             try {
                 val count = database.employeeDao().getCount()

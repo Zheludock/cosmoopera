@@ -73,6 +73,9 @@ class EmployeeRepository @Inject constructor(
         employeeDao.updateCommanderStatus(oldCommanderId, b)
     }
 
+    suspend fun getEmployeesBySquad(squadId: String): List<Employee>{
+        return employeeDao.getEmployeesBySquadId(squadId)
+    }
 }
 
 @Singleton
@@ -104,7 +107,7 @@ class SquadRepository @Inject constructor(
         return squadDao.getSquadById(newSquadId)
     }
 
-    suspend fun updateSquadCommander(id: String, id1: String) {
+    suspend fun updateSquadCommander(id: String, id1: String?) {
         squadDao.updateCommander(id, id1)
     }
 

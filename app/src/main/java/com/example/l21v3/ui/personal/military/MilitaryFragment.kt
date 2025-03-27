@@ -110,7 +110,7 @@ class MilitaryFragment : Fragment() {
                     true
                 }
                 R.id.action_assign_commander -> {
-                    viewModel.showSelectCommanderDialog(section.id)
+                    viewModel.showSelectCommanderDialog(section.id, section.employees)
                     true
                 }
                 else -> false
@@ -143,6 +143,10 @@ class MilitaryFragment : Fragment() {
                 }
                 R.id.delete -> {
                     viewModel.deleteEmployee(employee)
+                    true
+                }
+                R.id.promote -> {
+                    viewModel.promoteEmployee(employee)
                     true
                 }
                 else -> {
@@ -183,7 +187,7 @@ class MilitaryFragment : Fragment() {
         currentWeapon: String?,
         onWeaponSelected: (String) -> Unit
     ) {
-        val weapons = Weapons.values().map { it.name }
+        val weapons = Weapons.entries.map { it.name }
         val currentIndex = weapons.indexOfFirst {
             it.equals(currentWeapon, ignoreCase = true)
         }
@@ -191,7 +195,7 @@ class MilitaryFragment : Fragment() {
         AlertDialog.Builder(requireContext())
             .setTitle("Выберите оружие для правой руки")
             .setSingleChoiceItems(weapons.toTypedArray(), currentIndex) { dialog, which ->
-                val selectedWeapon = Weapons.values()[which].name
+                val selectedWeapon = Weapons.entries[which].name
                 onWeaponSelected(selectedWeapon)
                 dialog.dismiss()
             }

@@ -31,7 +31,10 @@ class EmployeeRepository @Inject constructor(
     }
 
     suspend fun getEmployeesByRole(role: String): List<Employee> {
-        return employeeDao.getEmployeesByRole(role)
+        println("🛠️ Запрос сотрудников с ролью: '$role'")
+        val result = employeeDao.getEmployeesByRole(role)
+        println("🔍 Найдено ${result.size} записей для роли '$role'")
+        return result
     }
 
     suspend fun updateLeftHandArm(employee: Employee, newArm: String) {

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.l21v3.model.data.Rank
 import java.util.UUID
 
 @Entity(
@@ -19,7 +20,7 @@ data class Employee(
     @PrimaryKey val id: String = UUID.randomUUID().toString(),
     val name: String,
     val role: String,
-    var rank: String = "Рядовой",
+    var rank: String = Rank.PRIVATE.displayName,
     var isOnMission: Boolean = false,
     var isCommander: Boolean = false,
     @ColumnInfo(index = true) var currentSquadId: String? = null,

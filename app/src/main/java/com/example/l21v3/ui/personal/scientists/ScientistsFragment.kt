@@ -95,6 +95,10 @@ class ScientistsFragment : Fragment() {
                     viewModel.deleteEmployee(employee)
                     true
                 }
+                R.id.promote -> {
+                    viewModel.promoteEmployee(employee)
+                    true
+                }
                 else -> false
             }
         }

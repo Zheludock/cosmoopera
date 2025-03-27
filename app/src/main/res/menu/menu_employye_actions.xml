@@ -11,4 +11,7 @@
     <item
         android:id="@+id/action_transfer"
         android:title="Перевести в другой отряд"/>
+    <item
+        android:id="@+id/promote"
+        android:title="Повысить звание"/>
 </menu>

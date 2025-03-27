@@ -1,6 +1,5 @@
 package com.example.l21v3.model.data
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -20,7 +19,7 @@ interface EmployeeDao {
     suspend fun update(employee: Employee)
 
     @Query("SELECT * FROM employee WHERE currentSquadId IS :squadId AND role = :role")
-    fun getEmployeesBySquadIdLiveData(squadId: String?, role: String): LiveData<List<Employee>>
+    suspend fun getEmployeesBySquadIdLiveData(squadId: String?, role: String): List<Employee>
 
     @Delete
     suspend fun delete(employee: Employee)
@@ -36,7 +35,7 @@ interface EmployeeDao {
     suspend fun getEmployeeWithSquad(employeeId: String): EmployeeWithSquad
 
     @Query("SELECT * FROM employee WHERE role = :role")
-    fun getEmployeesByRole(role: String): LiveData<List<Employee>>
+    suspend fun getEmployeesByRole(role: String): List<Employee>
 
     @Query("SELECT COUNT(*) FROM employee")
     suspend fun getCount(): Int
@@ -44,8 +43,14 @@ interface EmployeeDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(employees: List<Employee>)
 
-    @Query("UPDATE employee SET currentSquadId = :squadId WHERE id = :employeeId")
-    suspend fun updateEmployeeSquad(employeeId: String?, squadId: String)
+    @Query("UPDATE employee SET currentSquadId = :squadId WHERE id = :id")
+    suspend fun updateEmployeeSquadDirect(id: String, squadId: String?)
+
+    @Query("SELECT * FROM employee WHERE currentSquadId = :squadId")
+    suspend fun getBySquad(squadId: String): List<Employee>
+
+    @Query("UPDATE employee SET isCommander = :isCommander WHERE id = :employeeId")
+    suspend fun updateCommanderStatus(employeeId: String, isCommander: Boolean)
 }
 
 @Dao
@@ -56,8 +61,17 @@ interface SquadDao {
     @Update
     suspend fun update(squad: Squad)
 
+    @Query("UPDATE squad SET name = :newName WHERE id = :squadId")
+    suspend fun updateName(squadId: String, newName: String)
+
+    @Query("UPDATE squad SET currentSize = currentSize + :delta WHERE id = :squadId")
+    suspend fun updateSize(squadId: String, delta: Int)
+
     @Delete
     suspend fun delete(squad: Squad)
+
+    @Query("DELETE FROM squad WHERE id = :squadId")
+    suspend fun deleteById(squadId: String)
 
     @Query("SELECT * FROM squad WHERE id = :id")
     suspend fun getSquadById(id: String): Squad?
@@ -70,5 +84,11 @@ interface SquadDao {
     suspend fun getSquadWithMembers(squadId: String): SquadWithMembers
 
     @Query("SELECT * FROM squad")
-    fun getAllSquads(): LiveData<List<Squad>>
+    suspend fun getAllSquads(): List<Squad>
+
+    @Query("SELECT EXISTS(SELECT 1 FROM squad WHERE name = :name)")
+    suspend fun isSquadNameExists(name: String): Boolean
+
+    @Query("UPDATE squad SET commanderId = :commanderId WHERE id = :squadId")
+    suspend fun updateCommander(squadId: String, commanderId: String?)
 }

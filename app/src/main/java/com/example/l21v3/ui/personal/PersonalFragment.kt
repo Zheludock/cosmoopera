@@ -34,14 +34,6 @@ class PersonalFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.militaryEmployees.observe(viewLifecycleOwner) { employees ->
-            // Обновите UI (например, передайте данные в адаптер)
-        }
-
-        viewModel.message.observe(viewLifecycleOwner) { message ->
-            // Покажите сообщение об ошибке (например, через Snackbar)
-        }
-
         setupViewPager()
     }
 

@@ -1,6 +1,5 @@
 package com.example.l21v3.model.data
 
-import androidx.lifecycle.LiveData
 import com.example.l21v3.model.Employee
 import com.example.l21v3.model.Squad
 import javax.inject.Inject
@@ -8,7 +7,8 @@ import javax.inject.Singleton
 
 @Singleton
 class EmployeeRepository @Inject constructor(
-    private val employeeDao: EmployeeDao
+    private val employeeDao: EmployeeDao,
+    private val squadDao: SquadDao
 ) {
     suspend fun insertEmployee(employee: Employee) {
         employeeDao.insert(employee)
@@ -30,7 +30,7 @@ class EmployeeRepository @Inject constructor(
         return employeeDao.getEmployeeWithSquad(employeeId)
     }
 
-    fun getEmployeesByRole(role: String): LiveData<List<Employee>> {
+    suspend fun getEmployeesByRole(role: String): List<Employee> {
         return employeeDao.getEmployeesByRole(role)
     }
 
@@ -52,16 +52,24 @@ class EmployeeRepository @Inject constructor(
         employeeDao.insertAll(employees)
     }
 
-    fun getFreeEmployees(role: String): LiveData<List<Employee>> =
-        employeeDao.getEmployeesBySquadIdLiveData(null, role)
-
-    suspend fun updateEmployeeSquad(employeeId: String, squadId: String) {
-        employeeDao.updateEmployeeSquad(employeeId, squadId)
+    suspend fun updateEmployeeSquad(employee: Employee, squadId: String?) {
+        updateEmployeeSquadDirect(employee.id, squadId)
     }
 
-    fun getEmployeesBySquadId(squadId: String, role: String): LiveData<List<Employee>> {
+    private suspend fun updateEmployeeSquadDirect(employeeId: String, squadId: String?) = employeeDao.updateEmployeeSquadDirect(employeeId, squadId)
+
+    suspend fun getEmployeesBySquadId(squadId: String, role: String): List<Employee> {
         return employeeDao.getEmployeesBySquadIdLiveData(squadId, role)
     }
+
+    suspend fun getBySquad(squadId: String){
+        employeeDao.getBySquad(squadId)
+    }
+
+    suspend fun updateCommanderStatus(oldCommanderId: String, b: Boolean) {
+        employeeDao.updateCommanderStatus(oldCommanderId, b)
+    }
+
 }
 
 @Singleton
@@ -73,25 +81,27 @@ class SquadRepository @Inject constructor(
         squadDao.insert(squad)
     }
 
-    suspend fun updateSquad(squad: Squad) {
-        squadDao.update(squad)
+    suspend fun deleteSquadById(squadId: String){
+        squadDao.deleteById(squadId)
     }
 
-    suspend fun deleteSquad(squad: Squad) {
-        squadDao.delete(squad)
+    suspend fun getAllSquads(): List<Squad> = squadDao.getAllSquads()
+
+    suspend fun isSquadNameExists(name: String): Boolean = squadDao.isSquadNameExists(name)
+
+    suspend fun updateSquadName(squadId:String, name: String){
+        squadDao.updateName(squadId, name)
     }
 
-    suspend fun getSquadById(id: String): Squad? {
-        return squadDao.getSquadById(id)
+    suspend fun updateSquadSize(squadId: String, delta: Int){
+        squadDao.updateSize(squadId, delta)
     }
 
-    suspend fun getSquadsByCommanderId(commanderId: String): List<Squad> {
-        return squadDao.getSquadsByCommanderId(commanderId)
+    suspend fun getSquadById(newSquadId: String): Squad? {
+        return squadDao.getSquadById(newSquadId)
     }
 
-    suspend fun getSquadWithMembers(squadId: String): SquadWithMembers {
-        return squadDao.getSquadWithMembers(squadId)
+    suspend fun updateSquadCommander(id: String, id1: String) {
+        squadDao.updateCommander(id, id1)
     }
-
-    fun getAllSquads(): LiveData<List<Squad>> = squadDao.getAllSquads()
 }

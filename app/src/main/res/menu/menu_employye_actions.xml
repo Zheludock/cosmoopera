@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/delete"
+        android:title="Уволить" />
+    <item
+        android:id="@+id/giveRightHandAmmo"
+        android:title="Установить основное оружие" />
+    <item
+        android:id="@+id/giveLeftHandAmmo"
+        android:title="Установить дополнительное оружие" />
+    <item
+        android:id="@+id/action_transfer"
+        android:title="Перевести в другой отряд"/>
+</menu>

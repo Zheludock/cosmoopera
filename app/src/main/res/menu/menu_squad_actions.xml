@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_rename"
+        android:title="Переименовать"/>
+    <item
+        android:id="@+id/action_delete"
+        android:title="Удалить отряд"/>
+    <item
+        android:id="@+id/action_assign_commander"
+        android:title="Назначить командира"/>
+</menu>
